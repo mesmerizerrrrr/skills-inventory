@@ -1,0 +1,40 @@
+### skills 생성을 위한 자료 수집 디렉토리는 제외
+/backdata/*
+!/backdata/README.md
+
+### 로컬 작업 산출물과 OS 메타데이터는 제외
+/outputs/
+.DS_Store
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+bin/
+!**/src/main/**/bin/
+!**/src/test/**/bin/
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+out/
+!**/src/main/**/out/
+!**/src/test/**/out/
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+### VS Code ###
+.vscode/
+.java-version
+.tool-versions
