@@ -17,7 +17,7 @@
 
 ## enum 문서화 서식
 
-이 서식은 `eci-my247-api`에서 이상수가 작성한 enum의 문서 배치를 보존한다. 타입 JavaDoc에는 업무 개념과 상수 목록을, 상수에는 해당 값의 의미를 둔다. 다음은 JavaDoc과 API 문서화를 함께 요청받았고 기존에 Swagger를 사용하는 경우의 가상 예다. JavaDoc만 작성할 때는 JavaDoc 부분만 적용한다.
+타입 JavaDoc에는 업무 개념과 상수 목록을 두어 가능한 값을 함께 파악하게 하고, 각 상수에는 해당 값의 의미와 적용 조건을 둔다. 다음은 JavaDoc과 API 문서화를 함께 요청받았고 기존에 Swagger를 사용하는 경우의 가상 예다. JavaDoc만 작성할 때는 JavaDoc 부분만 적용한다.
 
 ```java
 /**
@@ -36,11 +36,15 @@
     """)
 public enum WorkState {
 
-    /** 실행 대기 */
+    /**
+     * 실행 대기
+     */
     @Schema(description = "실행 대기")
     WAITING,
 
-    /** 실행 중 */
+    /**
+     * 실행 중
+     */
     @Schema(description = "실행 중")
     RUNNING
 }
@@ -48,16 +52,9 @@ public enum WorkState {
 
 상수별 조건이 있으면 목록과 상수 설명, API 문서에서 의미가 어긋나지 않도록 맞춘다. 설명이 같다는 이유로 enum의 모든 사용 DTO에 같은 문구를 복제하지 않는다. 기존 Schema 문구와 구현이 다르면 요청된 문서 범위에서 차이를 확인하고, enum 값·직렬화·매핑 자체는 주석 작업으로 변경하지 않는다.
 
-### 출처와 적용 한계
+### 적용 범위
 
-2026-10-16에 `eci-my247-api`의 전체 가용 브랜치에서 `이상수 <sangsoo.lee@etoos.com>`의 비병합 enum 이력(2025-11-24~2026-10-13)을 확인하고, 아래 신규 작성 diff와 현재 소스를 대조했다. 경로는 원본 저장소 기준이다.
-
-| 커밋 / 작성일 | 근거 |
-| --- | --- |
-| `faa8148` / 2026-01-12 | `src/main/java/com/etoos/my247/plan_card/application/enums/PlanCardProgressState.java`: 타입 JavaDoc의 상수 링크 목록, 상수별 한글 설명, Schema 병기 |
-| `9e71a16` / 2026-01-12 | `src/main/java/com/etoos/my247/study_history/application/enums/StudyTimerType.java`: 같은 서식을 새 enum에 적용하고 상수에 업무 적용 조건 명시 |
-
-모든 enum이 이 전체 서식을 사용하는 것은 아니다. 예를 들어 `1643fca`(2026-08-04)의 `src/main/java/com/etoos/my247/banner/application/enums/BannerActionType.java`는 더 간단한 형태다. 보존하는 것은 사용자가 선택한 문서화 서식이며, 모든 기존 enum에 일괄 주석을 추가하거나 Swagger 도입을 요구하는 규칙은 아니다. `@param`에 타입명만 반복하거나 작성자·시각을 자동 생성하는 관례는 이 보강에 포함하지 않는다.
+기존 프로젝트가 타입 요약과 상수별 설명만 두는 간단한 enum 서식을 사용하면 그 규약을 따른다. 위 예시를 이유로 모든 기존 enum에 일괄 주석을 추가하거나 Swagger를 도입하지 않는다. `@param`의 타입 표기 뒤에는 인자의 실제 의미를 설명하며 타입명만 적고 끝내지 않는다. 확인되지 않은 작성자·버전·시각을 자동으로 넣지 않는다.
 
 ## 레이어별 기준
 
@@ -78,12 +75,12 @@ public enum WorkState {
 
 ```java
 /**
- * 분 단위의 시간을 초 단위로 변환한다.
+ * {@link Math}의 정확한 곱셈 연산으로 분 단위의 시간을 초 단위로 변환한다.
  *
- * @param minutes 변환할 분 단위 시간. 0 이상이어야 한다.
- * @return 초 단위로 변환한 시간
- * @throws IllegalArgumentException minutes가 음수인 경우
- * @throws ArithmeticException 변환 결과가 int 범위를 초과하는 경우
+ * @param minutes {@code int} 변환할 분 단위 시간. 0 이상이어야 한다.
+ * @return {@code int} 초 단위로 변환한 시간
+ * @throws IllegalArgumentException {@code minutes}가 음수인 경우
+ * @throws ArithmeticException 변환 결과가 {@code int} 범위를 초과하는 경우
  */
 public int toSeconds(int minutes) {
     if (minutes < 0) {
@@ -93,4 +90,73 @@ public int toSeconds(int minutes) {
 }
 ```
 
-예시의 핵심은 입력 단위·범위와 실패 조건을 구현에 맞게 설명하는 것이다. 이 형식을 모든 메서드에 기계적으로 복사하지 않는다.
+예시의 입력 단위·범위·실패 조건과 태그 종류는 실제 구현에 맞춰 선택한다. 다중행 주석, 본문과 첫 블록 태그 사이 빈 ` *` 줄, 매개변수·반환 타입 표기와 심볼 링크는 공통 기본 서식으로 유지한다.
+
+## 매개변수 타입 예시
+
+`@param` 뒤의 매개변수명은 선언 그대로 두고, 그 다음에 실제 선언 타입의 링크·코드 표기와 설명을 작성한다. 생성자 인자와 record 구성요소도 같은 규칙을 적용한다.
+
+| 선언된 매개변수 | JavaDoc 소스의 매개변수 태그 |
+| --- | --- |
+| `RequestDto request` | `@param request {@link RequestDto} 생성에 사용할 요청값` |
+| `int count` | `@param count {@code int} 가져올 최대 건수. 1 이상` |
+| `Long userId` | `@param userId {@link Long} 조회할 사용자 식별자` |
+| `List<AppPushHistEntityId> ids` | `@param ids {@link List}&lt;{@link AppPushHistEntityId}&gt; 조회할 푸시 이력 식별자 목록` |
+| `Map<String, List<DtoClass>> groups` | `@param groups {@link Map}&lt;{@link String}, {@link List}&lt;{@link DtoClass}&gt;&gt; 코드별 처리 대상 목록` |
+| `DtoClass[] items` | `@param items {@link DtoClass}[] 처리할 상세 정보 배열` |
+| `T value` | `@param value {@code T} 전달할 값` |
+| 타입 매개변수 `<T extends DtoClass>` | `@param <T> {@code T} {@link DtoClass}를 상속하는 처리 결과 타입` |
+
+배열·와일드카드 등의 타입 구성은 아래 반환 타입 예시와 동일하다. `@param {@link request}` 또는 `@param {@link T}`처럼 태그가 요구하는 이름 자리를 링크로 바꾸지 않는다.
+
+## 반환 타입 예시
+
+아래 타입과 메서드는 표기 방법을 보여 주는 가상 예다. 실제 코드에서는 선언된 반환 타입·타입 인수를 사용하고, 링크 대상이 현재 패키지 또는 import 등으로 해석되는지 확인한다.
+
+| 선언된 반환 타입 | JavaDoc 소스의 반환 태그 |
+| --- | --- |
+| `DtoClass` | `@return {@link DtoClass} 조회한 상세 정보` |
+| `int` | `@return {@code int} 조건에 맞는 전체 건수` |
+| `Integer` | `@return {@link Integer} 집계된 건수. 집계값이 없으면 null` |
+| `List<AppPushHistEntityId>` | `@return {@link List}&lt;{@link AppPushHistEntityId}&gt; 조회한 푸시 이력 식별자 목록. 없으면 빈 목록` |
+| `Map<String, List<DtoClass>>` | `@return {@link Map}&lt;{@link String}, {@link List}&lt;{@link DtoClass}&gt;&gt; 코드별 상세 정보 목록` |
+| `DtoClass[]` | `@return {@link DtoClass}[] 조회한 상세 정보 배열` |
+| `int[]` | `@return {@code int}[] 항목별 집계 건수 배열` |
+| `T` | `@return {@code T} 전달받은 값` |
+| `List<? extends DtoClass>` | `@return {@link List}&lt;{@code ? extends} {@link DtoClass}&gt; 조회한 상세 정보 목록` |
+
+제네릭의 `&lt;`·`&gt;`는 생성 문서에서 `<`·`>`로 표시되며 각 `{@link ...}`는 별도의 타입 링크로 유지된다. 클래스가 아닌 타입 변수·와일드카드를 실제 클래스처럼 링크하지 않는다.
+
+```java
+/**
+ * 요청 조건에 맞는 푸시 이력 식별자를 조회한다.
+ *
+ * @param userId {@link Long} 조회할 사용자 식별자
+ * @return {@link List}&lt;{@link AppPushHistEntityId}&gt; 푸시 이력 식별자 목록. 없으면 빈 목록
+ */
+public List<AppPushHistEntityId> findIds(Long userId) {
+    // 가상 예시에서는 조회 결과가 없다고 가정한다.
+    return List.of();
+}
+```
+
+## 본문과 메서드 링크 예시
+
+아래 예시는 `java.util.List`를 import한 클래스 안의 메서드다. 본문의 메서드 언급은 실제 선언으로 연결하고, `@param`·`@return`에는 각각 선언 타입과 의미를 적는다. `@throws`의 예외명과 `@see`의 대상은 블록 태그 고유 문법을 유지한다.
+
+```java
+/**
+ * {@link List#copyOf(java.util.Collection)}로 이름 목록의 변경 불가능한 사본을 만든다.
+ * 원본 목록의 항목을 추가하거나 제거해도 반환 목록에는 반영되지 않는다.
+ *
+ * @param names {@link List}&lt;{@link String}&gt; 복사할 이름 목록. null 목록이나 원소는 허용하지 않는다.
+ * @return {@link List}&lt;{@link String}&gt; 입력 순서를 유지하는 변경 불가능한 이름 목록
+ * @throws NullPointerException {@code names} 또는 목록의 원소가 null인 경우
+ * @see List#copyOf(java.util.Collection)
+ */
+public List<String> copyNames(final List<String> names) {
+    return List.copyOf(names);
+}
+```
+
+현재 클래스의 메서드는 `{@link #copyNames(List)}`, 특정 필드나 상수는 `{@link Integer#MAX_VALUE}`처럼 연결한다. 링크 대상 메서드의 인자 목록에는 실제 선언 타입을 쓰고, 오버로드를 구분할 수 있는지 확인한다. 매개변수인 `names` 자체를 언급할 때는 `{@code names}`를 사용한다.

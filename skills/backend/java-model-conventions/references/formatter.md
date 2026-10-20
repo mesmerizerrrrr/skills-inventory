@@ -1,10 +1,10 @@
 # 포맷터 적용 범위
 
-[ETOOS_CODESTYLE.xml](../assets/ETOOS_CODESTYLE.xml)은 원본 저장소 `eci-my247-api`의 `extra/ETOOS_CODESTYLE.xml`을 변경 없이 보존한 IntelliJ 코드 스타일 자산이다. 이 스킬 폴더만 복사해도 파일을 사용할 수 있다.
+[ETOOS_CODESTYLE.xml](../assets/ETOOS_CODESTYLE.xml)은 이 스킬에 포함된 IntelliJ 코드 스타일 자산이다. 이 스킬 폴더만 복사해도 파일을 사용할 수 있다.
 
-- 출처는 `92f5858` · 2025-11-24 initial commit이다. 이상수의 후속 작성 이력과 별개로 **프로젝트에 반입된 이투스 명칭의 서식 설정**으로 분류한다. 전사 공식 규정 여부나 개인이 직접 설계했다는 사실은 이 이력만으로 확인되지 않는다.
-- 원본은 `GENERATE_FINAL_LOCALS=true`, `GENERATE_FINAL_PARAMETERS=true`, 연속 들여쓰기 4, 여러 줄 메서드 체인 정렬 등을 지정한다. 생략된 IDE 기본값을 임의로 채워 넣지 않는다.
-- 대상 프로젝트에 더 최신 포맷터나 `.editorconfig`가 있으면 그것을 우선한다. 보존 XML에는 editorconfig 사용 해제 옵션도 있으므로 보통의 코드 수정에서 이를 자동 가져오기하지 않는다.
+- 파일명과 코드 스타일 이름만으로 전사 공통 규정이라고 가정하지 않는다. 대상 프로젝트가 채택한 서식인지 먼저 확인한다.
+- XML은 `GENERATE_FINAL_LOCALS=true`, `GENERATE_FINAL_PARAMETERS=true`, 연속 들여쓰기 4, 여러 줄 메서드 체인 정렬 등을 지정한다. 생략된 IDE 기본값을 임의로 채워 넣지 않는다.
+- 대상 프로젝트에 더 최신 포맷터나 `.editorconfig`가 있으면 그것을 우선한다. 포함된 XML에는 editorconfig 사용 해제 옵션도 있으므로 보통의 코드 수정에서 이를 자동 가져오기하지 않는다.
 - 사용자가 이투스 서식 적용·복구를 요청하거나 프로젝트가 이 파일을 명시적으로 채택할 때 출력 자산으로 복사하거나 IDE에 가져올 수 있다. 요청받은 파일 범위만 포맷하고 무관한 파일을 일괄 변경하지 않는다.
 
-검증 범위는 원본과의 바이트 일치 및 XML 파싱이다. 특정 IDE 버전에서의 가져오기·포맷 결과까지 검증한 파일은 아니다.
+XML 파싱만으로 IDE의 가져오기·포맷 결과까지 확인할 수는 없다. 서식 적용 요청에서는 사용 중인 IDE에서 요청 범위의 결과 diff를 확인한다.
