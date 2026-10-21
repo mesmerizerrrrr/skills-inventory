@@ -18,7 +18,7 @@ description: "Java Entity·요청/응답 DTO를 추가하거나 수정할 때 �
 
 ## 조건에 따라 읽을 자료
 
-- 모델의 메서드·생성자 구현을 작성·수정할 때: [Java 구현 코드 가독성](../java-code-readability/SKILL.md)의 구간·줄바꿈·지역변수 기준을 적용한다. 이 작업을 지원하는 개별 배포본에는 `java-code-readability`도 같은 `backend` 아래에 포함한다.
+- 모델 클래스를 생성하거나 멤버 배치·메서드·생성자 구현을 작성·수정할 때: [Java 구현 코드 가독성](../java-code-readability/SKILL.md)의 클래스 배치·빈 줄·구간·줄바꿈·지역변수 기준을 적용한다. 이 작업을 지원하는 개별 배포본에는 `java-code-readability`도 같은 `backend` 아래에 포함한다.
 - 새 Entity·DTO 작성, 타입 선택, null/final 표기가 애매할 때: [모델 선택과 표기](references/model-choices.md).
 - 코드 서식 설정을 추가·복구하거나 이투스 포맷터를 요청받았을 때: [포맷터 적용 범위](references/formatter.md)와 포함된 XML을 사용한다. 보통의 모델 수정에서는 IDE 설정을 바꾸지 않는다.
 - 생성·변환 메서드의 형태나 직렬화 계약 확인 방법이 필요할 때: [모델 작성 예시](references/model-examples.md).

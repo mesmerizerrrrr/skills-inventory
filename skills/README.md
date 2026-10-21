@@ -40,14 +40,14 @@
 | `eci-querydsl-repository-support` | `database` | ECI의 QueryDSL CustomRepository 구현체에서 준비된 공통 support를 상속하고 초기화 재사용 | [SKILL.md](database/eci-querydsl-repository-support/SKILL.md) |
 | `jpa-coded-enum-mapping` | `database` | `ORDINAL`·`STRING`으로 의미와 저장값을 표현할 수 없는 DB 업무 코드를 enum과 Converter로 매핑 | [SKILL.md](database/jpa-coded-enum-mapping/SKILL.md) |
 | `java-model-conventions` | `backend` | Entity 생성·변경 메서드와 DTO 표현·변환을 기존 Java 모델 관례에 맞게 작성 | [SKILL.md](backend/java-model-conventions/SKILL.md) |
-| `java-code-readability` | `backend` | Java 메서드의 역할별 구간·주석·줄바꿈과 의미 있는 지역변수 기준 적용 | [SKILL.md](backend/java-code-readability/SKILL.md) |
+| `java-code-readability` | `backend` | Java 클래스의 주입 필드·공개 메서드 배치·빈 줄과 구현 구간·주석·줄바꿈·지역변수 기준 적용 | [SKILL.md](backend/java-code-readability/SKILL.md) |
 | `java-api-validation-errors` | `backend` | 요청 DTO 검증·한글 메시지·도메인 예외를 공통 오류 응답 계약에 연결 | [SKILL.md](backend/java-api-validation-errors/SKILL.md) |
-| `java-domain-api-structure` | `architecture` | 도메인별 Java API 구조, 신규 Service의 생성자 주입, readOnly 기반 트랜잭션·DB 분기 기준 | [SKILL.md](architecture/java-domain-api-structure/SKILL.md) |
+| `java-domain-api-structure` | `architecture` | 기존 패키지 스타일 선택, 도메인 Service·BridgeService 의존 방향과 순환 의존 해소, 생성자 주입·트랜잭션 기준 | [SKILL.md](architecture/java-domain-api-structure/SKILL.md) |
 | `git-commit-conventions` | `git` | 한글 Conventional Commits 메시지 작성·추천·검토와 티켓 표기 적용 | [SKILL.md](git/git-commit-conventions/SKILL.md) |
 
 Java 소스의 JavaDoc을 쓰는 작업은 `java-javadoc`, API 호출 계약을 설명하는 문서 작업은 `api-documentation`을 선택한다. Java로 구현된 API라는 이유만으로 두 스킬을 모두 읽지 않는다.
 
-Java 메서드·생성자의 구현을 작성·수정할 때는 `java-code-readability`를 적용한다. 내부 처리 구간의 `//` 주석·빈 줄과 지역변수 기준을 담당한다. QueryDSL projection·체인의 구체적인 서식은 `querydsl-repository-conventions`에서 관리하며, JavaDoc만 수정할 때 구현 포맷 변경까지 추가하지 않는다.
+Java 클래스를 생성하거나 멤버 배치·메서드·생성자의 구현을 작성·수정할 때는 `java-code-readability`를 적용한다. 클래스의 주입 필드·공개 메서드 배치·빈 줄과 내부 처리 구간의 `//` 주석·지역변수 기준을 담당한다. QueryDSL projection·체인의 구체적인 서식은 `querydsl-repository-conventions`에서 관리하며, JavaDoc만 수정할 때 구현 포맷 변경까지 추가하지 않는다.
 
 DB의 테이블·키·관계부터 정해야 하면 `etoos-db-modeling`, 정해진 모델의 SQL만 작성하면 `etoos-postgresql-ddl`을 선택한다. 설계 스킬은 최종 SQL 작성에 DDL 스킬을 함께 사용한다. 일반 조회 SQL 작성·성능 튜닝은 두 스킬의 주목적이 아니다.
 
@@ -57,7 +57,11 @@ ECI 프로젝트에서 QueryDSL을 사용하는 CustomRepository 구현체를 �
 
 API 모듈의 경계·패키지부터 정할 때는 `java-domain-api-structure`, 개별 Entity·DTO를 작성할 때는 `java-model-conventions`, 요청 검증·오류 동작을 구현할 때는 `java-api-validation-errors`를 선택한다. Java API라는 이유만으로 관련 스킬을 모두 읽지 않는다.
 
+Java 도메인의 디렉토리를 새로 만들거나 이동·이름 변경할 때는 `java-domain-api-structure`의 [스타일 선택 절차](architecture/java-domain-api-structure/SKILL.md#디렉토리-생성변경-전-스타일-선택)를 적용한다. 기존 디렉토리 안의 파일만 수정하는 작업에 전체 구조 재검토를 추가하지 않는다.
+
 Service 클래스를 새로 만들 때는 `java-domain-api-structure`의 [신규 Service 생성자 주입](architecture/java-domain-api-structure/SKILL.md#신규-service-생성자-주입)을 적용한다. DB에 접근하는 Service를 새로 만들거나 트랜잭션을 조정하면 [Service 트랜잭션과 readOnly](architecture/java-domain-api-structure/SKILL.md#service-트랜잭션과-readonly)도 적용한다. QueryDSL 조회 호출부에서도 필요한 절을 참조하며, 단순 Service 추가·트랜잭션 변경에 전체 도메인 구조 규칙을 적용하지 않는다.
+
+Service를 새로 만들거나 서비스 간 의존 관계를 변경할 때는 [Service 의존 방향과 BridgeService](architecture/java-domain-api-structure/SKILL.md#service-의존-방향과-bridgeservice)를 적용한다. 도메인 조합과 순환 의존을 다루면 해당 절에서 연결한 상세 기준·예시를 함께 읽는다.
 
 커밋 메시지를 추천·검토하거나 실제 커밋 요청을 수행할 때는 `git-commit-conventions`를 선택한다. 코드 구현이나 PR 설명 작성만 요청받은 경우에는 자동으로 커밋 작업을 추가하지 않는다.
 
@@ -78,10 +82,10 @@ skills/
 │       ├── SKILL.md                  # API 문서 작성 절차
 │       └── references/              # 조건부 Swagger 작성 관례
 ├── architecture/
-│   └── java-domain-api-structure/    # 도메인 계층·진입점·후처리 구성
+│   └── java-domain-api-structure/    # 도메인 계층·BridgeService·진입점·후처리 구성
 ├── backend/
 │   ├── java-model-conventions/      # Entity·DTO 표현과 IDE 서식 자산
-│   ├── java-code-readability/       # 메서드 구간·줄바꿈·지역변수 기준
+│   ├── java-code-readability/       # 클래스 배치·빈 줄·구간·지역변수 기준
 │   └── java-api-validation-errors/  # 요청 검증·업무 오류 표현
 ├── git/
 │   └── git-commit-conventions/      # 한글 커밋 메시지와 티켓 표기
