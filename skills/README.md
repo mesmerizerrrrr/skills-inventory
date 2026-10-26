@@ -19,7 +19,7 @@
 | --- | --- | --- |
 | `docs` | 코드 주석, API 사용법 등 이미 정해진 내용을 설명하는 문서 작성 | 스킬 2개; JavaDoc·Swagger 관례 보강 |
 | `database` | DB 모델링·DDL, 조회 저장소, 저장 코드와 Java 타입의 매핑 | 스킬 5개 |
-| `backend` | Java 구현 가독성·모델·요청 검증·업무 예외 등 서버 코드 구현 | 스킬 3개 |
+| `backend` | 신규 서버 프로젝트 초기 구성, Java 구현 가독성·모델·요청 검증·업무 예외 | 스킬 4개 |
 | `frontend` | 화면·컴포넌트 구현, 상태 관리, 사용자 상호작용 | 예정: 아직 스킬과 폴더 없음 |
 | `architecture` | 시스템·모듈의 경계, 책임, 의존 관계를 설계하고 결정 | 도메인별 Java API 구성 스킬 1개 |
 | `git` | 버전 관리 작업과 커밋 메시지 작성 관례 | 커밋 메시지 스킬 1개 |
@@ -42,6 +42,7 @@
 | `java-model-conventions` | `backend` | Entity 생성·변경 메서드와 DTO 표현·변환을 기존 Java 모델 관례에 맞게 작성 | [SKILL.md](backend/java-model-conventions/SKILL.md) |
 | `java-code-readability` | `backend` | Java 클래스의 주입 필드·공개 메서드 배치·빈 줄과 구현 구간·주석·줄바꿈·지역변수 기준 적용 | [SKILL.md](backend/java-code-readability/SKILL.md) |
 | `java-api-validation-errors` | `backend` | 요청 DTO 검증·한글 메시지·도메인 예외를 공통 오류 응답 계약에 연결 | [SKILL.md](backend/java-api-validation-errors/SKILL.md) |
+| `spring-boot-project-bootstrap` | `backend` | 버전 확인부터 신규 Spring Boot API의 빌드·보안·Jackson·공통 응답/예외·선택 DB 기반 초기 생성 | [SKILL.md](backend/spring-boot-project-bootstrap/SKILL.md) |
 | `java-domain-api-structure` | `architecture` | 기존 패키지 스타일 선택, 도메인 Service·BridgeService 의존 방향과 순환 의존 해소, 생성자 주입·트랜잭션 기준 | [SKILL.md](architecture/java-domain-api-structure/SKILL.md) |
 | `git-commit-conventions` | `git` | 한글 Conventional Commits 메시지 작성·추천·검토와 티켓 표기 적용 | [SKILL.md](git/git-commit-conventions/SKILL.md) |
 
@@ -56,6 +57,8 @@ DB의 테이블·키·관계부터 정해야 하면 `etoos-db-modeling`, 정해�
 ECI 프로젝트에서 QueryDSL을 사용하는 CustomRepository 구현체를 생성·수정할 때는 `eci-querydsl-repository-support`도 적용한다. 프로젝트에 준비된 공통 support의 상속·초기화 규칙을 담당하며, support가 없으면 이 전용 규칙은 적용하지 않는다. 일반 조회 결과 조립 규칙은 `querydsl-repository-conventions`에서 관리한다.
 
 API 모듈의 경계·패키지부터 정할 때는 `java-domain-api-structure`, 개별 Entity·DTO를 작성할 때는 `java-model-conventions`, 요청 검증·오류 동작을 구현할 때는 `java-api-validation-errors`를 선택한다. Java API라는 이유만으로 관련 스킬을 모두 읽지 않는다.
+
+신규 Spring Boot API 프로젝트의 빌드·실행 골격과 공통 설정을 처음 준비할 때는 `spring-boot-project-bootstrap`을 선택한다. Spring Boot·JDK 버전이 미지정이면 먼저 확인하며, 기존 프로젝트의 기능 추가·설정 유지보수·버전 업그레이드만 하는 요청에는 적용하지 않는다.
 
 Java 도메인의 디렉토리를 새로 만들거나 이동·이름 변경할 때는 `java-domain-api-structure`의 [스타일 선택 절차](architecture/java-domain-api-structure/SKILL.md#디렉토리-생성변경-전-스타일-선택)를 적용한다. 기존 디렉토리 안의 파일만 수정하는 작업에 전체 구조 재검토를 추가하지 않는다.
 
@@ -86,7 +89,8 @@ skills/
 ├── backend/
 │   ├── java-model-conventions/      # Entity·DTO 표현과 IDE 서식 자산
 │   ├── java-code-readability/       # 클래스 배치·빈 줄·구간·지역변수 기준
-│   └── java-api-validation-errors/  # 요청 검증·업무 오류 표현
+│   ├── java-api-validation-errors/  # 요청 검증·업무 오류 표현
+│   └── spring-boot-project-bootstrap/ # 버전 확인·신규 프로젝트 공통 기반 생성
 ├── git/
 │   └── git-commit-conventions/      # 한글 커밋 메시지와 티켓 표기
 └── database/
