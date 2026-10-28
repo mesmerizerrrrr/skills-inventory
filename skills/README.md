@@ -19,7 +19,7 @@
 | --- | --- | --- |
 | `docs` | 코드 주석, API 사용법 등 이미 정해진 내용을 설명하는 문서 작성 | 스킬 2개; JavaDoc·Swagger 관례 보강 |
 | `database` | DB 모델링·DDL, 조회 저장소, 저장 코드와 Java 타입의 매핑 | 스킬 5개 |
-| `backend` | 신규 서버 프로젝트 초기 구성, Java 구현 가독성·모델·요청 검증·업무 예외 | 스킬 4개 |
+| `backend` | 신규 서버 프로젝트 초기 구성, Java 구현 가독성·모델·요청 검증·업무 예외·테스트 작성 | 스킬 5개 |
 | `frontend` | 화면·컴포넌트 구현, 상태 관리, 사용자 상호작용 | 예정: 아직 스킬과 폴더 없음 |
 | `architecture` | 시스템·모듈의 경계, 책임, 의존 관계를 설계하고 결정 | 도메인별 Java API 구성 스킬 1개 |
 | `git` | 버전 관리 작업과 커밋 메시지 작성 관례 | 커밋 메시지 스킬 1개 |
@@ -42,6 +42,7 @@
 | `java-model-conventions` | `backend` | Entity 생성·변경 메서드와 DTO 표현·변환을 기존 Java 모델 관례에 맞게 작성 | [SKILL.md](backend/java-model-conventions/SKILL.md) |
 | `java-code-readability` | `backend` | Java 클래스의 주입 필드·공개 메서드 배치·빈 줄과 구현 구간·주석·줄바꿈·지역변수 기준 적용 | [SKILL.md](backend/java-code-readability/SKILL.md) |
 | `java-api-validation-errors` | `backend` | 요청 DTO 검증·한글 메시지·도메인 예외를 공통 오류 응답 계약에 연결 | [SKILL.md](backend/java-api-validation-errors/SKILL.md) |
+| `java-test-conventions` | `backend` | 메소드·분기별 유닛 테스트, 기능별 fixture, 테스트 전용 설정과 Repository 한정 H2 DB 검증 | [SKILL.md](backend/java-test-conventions/SKILL.md) |
 | `spring-boot-project-bootstrap` | `backend` | 버전 확인부터 신규 Spring Boot API의 빌드·보안·Jackson·공통 응답/예외·선택 DB 기반 초기 생성 | [SKILL.md](backend/spring-boot-project-bootstrap/SKILL.md) |
 | `java-domain-api-structure` | `architecture` | 기존 패키지 스타일 선택, 도메인 Service·BridgeService 의존 방향과 순환 의존 해소, 생성자 주입·트랜잭션 기준 | [SKILL.md](architecture/java-domain-api-structure/SKILL.md) |
 | `git-commit-conventions` | `git` | 한글 Conventional Commits 메시지 작성·추천·검토와 티켓 표기 적용 | [SKILL.md](git/git-commit-conventions/SKILL.md) |
@@ -49,6 +50,8 @@
 Java 소스의 JavaDoc을 쓰는 작업은 `java-javadoc`, API 호출 계약을 설명하는 문서 작업은 `api-documentation`을 선택한다. Java로 구현된 API라는 이유만으로 두 스킬을 모두 읽지 않는다.
 
 Java 클래스를 생성하거나 멤버 배치·메서드·생성자의 구현을 작성·수정할 때는 `java-code-readability`를 적용한다. 클래스의 주입 필드·공개 메서드 배치·빈 줄과 내부 처리 구간의 `//` 주석·지역변수 기준을 담당한다. QueryDSL projection·체인의 구체적인 서식은 `querydsl-repository-conventions`에서 관리하며, JavaDoc만 수정할 때 구현 포맷 변경까지 추가하지 않는다.
+
+Java 테스트 코드를 작성·수정할 때는 `java-test-conventions`를 선택한다. 일반 계층의 메소드·분기별 유닛 테스트와 Repository 계층에 한정한 실제 DB 검증을 다룬다. 테스트의 구간 주석·fixture·환경설정 위치는 이 전용 스킬에서 관리한다.
 
 DB의 테이블·키·관계부터 정해야 하면 `etoos-db-modeling`, 정해진 모델의 SQL만 작성하면 `etoos-postgresql-ddl`을 선택한다. 설계 스킬은 최종 SQL 작성에 DDL 스킬을 함께 사용한다. 일반 조회 SQL 작성·성능 튜닝은 두 스킬의 주목적이 아니다.
 
@@ -90,6 +93,7 @@ skills/
 │   ├── java-model-conventions/      # Entity·DTO 표현과 IDE 서식 자산
 │   ├── java-code-readability/       # 클래스 배치·빈 줄·구간·지역변수 기준
 │   ├── java-api-validation-errors/  # 요청 검증·업무 오류 표현
+│   ├── java-test-conventions/       # 메소드·분기별 테스트와 Repository H2 검증
 │   └── spring-boot-project-bootstrap/ # 버전 확인·신규 프로젝트 공통 기반 생성
 ├── git/
 │   └── git-commit-conventions/      # 한글 커밋 메시지와 티켓 표기
